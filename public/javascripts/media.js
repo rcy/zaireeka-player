@@ -1,41 +1,17 @@
 var media = {
-//  self: this,
   getTrack: function(disc, track) {
     console.log(disc,track);
-    return this.baseDir + this.tracks[disc][track];
+    return this.base + '/' + this.discs[disc] + '/' + this.tracks[track];
   },
-  baseDir: "/sound/Zaireeka/",
+  base: "/sound/Zaireeka",
+  discs: ["Disc 1", "Disc 2", "Disc 3", "Disc 4"],
   tracks: [
-    ["Disc 1/01 Okay I'll Admit That I Really Don't Understand.mp3",
-     "Disc 1/02 Riding to Work in the Year 2025 (Your Invisible Now).mp3",
-     "Disc 1/03 Thirty-Five Thousand Feet of Despair.mp3",
-     "Disc 1/04 A Machine in India.mp3",
-     "Disc 1/05 The Train Runs Over the Camel But Is Derailed by the Gnat.mp3",
-     "Disc 1/06 How Will We Know- (Futuristic Crashendos).mp3",
-     "Disc 1/07 March of the Rotten Vegetables.mp3",
-     "Disc 1/08 The Big Ol' Bug Is the New Baby Now.mp3"],
-    ["Disc 2/01 Okay I'll Admit That I Really Don't Understand.mp3",
-     "Disc 2/02 Riding to Work in the Year 2025 (Your Invisible Now).mp3",
-     "Disc 2/03 Thirty-Five Thousand Feet of Despair.mp3",
-     "Disc 2/04 A Machine in India.mp3",
-     "Disc 2/05 The Train Runs Over the Camel But Is Derailed by the Gnat.mp3",
-     "Disc 2/06 How Will We Know- (Futuristic Crashendos).mp3",
-     "Disc 2/07 March of the Rotten Vegetables.mp3",
-     "Disc 2/08 The Big Ol' Bug Is the New Baby Now.mp3"],
-    ["Disc 3/01 Okay I'll Admit That I Really Don't Understand.mp3",
-     "Disc 3/02 Riding to Work in the Year 2025 (Your Invisible Now).mp3",
-     "Disc 3/03 Thirty-Five Thousand Feet of Despair.mp3",
-     "Disc 3/04 A Machine in India.mp3",
-     "Disc 3/05 The Train Runs Over the Camel But Is Derailed by the Gnat.mp3",
-     "Disc 3/06 How Will We Know- (Futuristic Crashendos).mp3",
-     "Disc 3/07 March of the Rotten Vegetables.mp3",
-     "Disc 3/08 The Big Ol' Bug Is the New Baby Now.mp3"],
-    ["Disc 4/01 Okay I'll Admit That I Really Don't Understand.mp3",
-     "Disc 4/02 Riding to Work in the Year 2025 (Your Invisible Now).mp3",
-     "Disc 4/03 Thirty-Five Thousand Feet of Despair.mp3",
-     "Disc 4/04 A Machine in India.mp3",
-     "Disc 4/05 The Train Runs Over the Camel But Is Derailed by the Gnat.mp3",
-     "Disc 4/06 How Will We Know- (Futuristic Crashendos).mp3",
-     "Disc 4/07 March of the Rotten Vegetables.mp3",
-     "Disc 4/08 The Big Ol' Bug Is the New Baby Now.mp3"]]
+    "01 Okay I'll Admit That I Really Don't Understand.mp3",
+    "02 Riding to Work in the Year 2025 (Your Invisible Now).mp3",
+    "03 Thirty-Five Thousand Feet of Despair.mp3",
+    "04 A Machine in India.mp3",
+    "05 The Train Runs Over the Camel But Is Derailed by the Gnat.mp3",
+    "06 How Will We Know- (Futuristic Crashendos).mp3",
+    "07 March of the Rotten Vegetables.mp3",
+    "08 The Big Ol' Bug Is the New Baby Now.mp3"]
 };

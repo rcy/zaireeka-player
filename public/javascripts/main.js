@@ -1,36 +1,57 @@
 $(document).ready(function() {
+  // setup selections
+  // ================
+  $.each(media.discs, function(i) {
+    $("select.disc").append("<option value="+i+">"+this+"</option>");
+  });
+  $.each(media.tracks, function(i) {
+    $("select.track").append("<option value="+i+">"+this+"</option>");
+  });
+
   // setup player
   // ============
   $("#player").jPlayer({
     swfPath: "/javascripts/vendor",
-    ready: function() {
-      console.log('ready this:', $(this));
-      // $(this).jPlayer("setMedia", {
-      //   mp3: "/sound/Zaireeka/Disc 3/01 Okay I'll Admit That I Really Don't Understand.mp3" 
-      // })//.jPlayer("play");
-    },
-    //    supplied: "mp3"
-  })
+    ready: function(e) {
+      $(this).bind($.jPlayer.event.canplay, function(event) {
+        $("button.play").attr('disabled', false);
+        $("button.stop").attr('disabled', true);
+      });
+      $(this).bind($.jPlayer.event.play, function(event) {
+        $("button.play").attr('disabled', true);
+        $("button.stop").attr('disabled', false);
+        return false;
+      });
+      $(this).bind($.jPlayer.event.pause, function(event) {
+        $("button.play").attr('disabled', false);
+        $("button.stop").attr('disabled', true);
+        return false;
+      });
+      $(this).bind($.jPlayer.event.timeupdate, function(event) {
+        var elapsed = $.jPlayer.convertTime(event.jPlayer.status.currentTime)
+        $("#progress .elapsed").text(elapsed);
+        return false;
+      });
+      $(this).bind($.jPlayer.event.progress, function(event) {
+        return false;
+      });
+      $(this).bind($.jPlayer.event.loadeddata, function(event) {
+        console.log('loadeddata', event.jPlayer.status);
+        return false;
+      });
+      $(this).bind($.jPlayer.event.durationchange, function(event) {
+        var duration = $.jPlayer.convertTime(event.jPlayer.status.duration)
+        console.log('durationchange', duration);
+        $("#progress .duration").text(duration);
+        return false;
+      });
 
-  $("#player").bind($.jPlayer.event.play, function(event) {
-    console.log('play', event);
-    return false;
-  });
-  $("#player").bind($.jPlayer.event.loadstart, function(event) {
-    console.log('loadstart', event);
-    return false;
-  });
-  $("#player").bind($.jPlayer.event.progress, function(event) {
-    console.log('progress', event);
-    return false;
-  });
-  $("#player").bind($.jPlayer.event.timeupdate, function(event) {
-    var current = $.jPlayer.convertTime(event.jPlayer.status.currentTime);
-    var duration = $.jPlayer.convertTime(event.jPlayer.status.duration);
-    $("#progress").text(current+'/'+duration);
-    return false;
+      setMedia();
+    }
   });
 
+  // ui events
+  // =========
   $("button.play").click(function() {
     socket.emit('play');
   });
@@ -39,24 +60,28 @@ $(document).ready(function() {
   });
 
   $("select.disc").change(function() {
-    var disc = $(this).context.value;
-    var file = media.getTrack(disc, 0);
-    $("#player").jPlayer("setMedia", {
-      mp3: file
-    })
+    setMedia();
+  })
+  $("select.track").change(function() {
+    console.log('broadcasting select',$(this).val());
+    socket.emit('track', $(this).val());
   })
 
-  function play() {
-    $("#player").jPlayer("play");
-  }
-  function stop() {
-    $("#player").jPlayer("stop");
+  function setMedia() {
+    var disc = $("select.disc").val();
+    var track = $("select.track").val();
+    var file = media.getTrack(disc, track);
+    console.log('setmedia', file);
+    $("#player").jPlayer("setMedia", { mp3: file })
   }
 
   // socket connection
   // =================
   socket = io.connect()
-  socket.on('play', play);
-  socket.on('stop', stop);
-
+  socket.on('play', function() { $("#player").jPlayer("play") });
+  socket.on('stop', function() { $("#player").jPlayer("stop") });
+  socket.on('track', function(n) { 
+    $("select.track").val(n);
+    setMedia();
+  });
 })

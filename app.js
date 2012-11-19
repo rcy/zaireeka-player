@@ -49,4 +49,7 @@ io.sockets.on('connection', function(socket) {
     console.log(socket.id, 'pressed stop');
     io.sockets.in(group).emit('stop');
   });
+  socket.on('track', function(data) {
+    io.sockets.in(group).emit('track', data);
+  });
 });
