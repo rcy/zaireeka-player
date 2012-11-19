@@ -3,10 +3,10 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes');
-
+var express = require('express');
+var routes = require('./routes');
 var app = module.exports = express.createServer();
+var io = require('socket.io').listen(app);
 
 // Configuration
 
@@ -33,4 +33,20 @@ app.get('/', routes.index);
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+});
+
+var group = 'group';
+io.sockets.on('connection', function(socket) {
+  console.log('connection', socket.id);
+  socket.join(group);
+
+  // when one presses play, broadcast play to all
+  socket.on('play', function(data) {
+    console.log(socket.id, 'pressed play');
+    io.sockets.in(group).emit('play');
+  });
+  socket.on('stop', function(data) {
+    console.log(socket.id, 'pressed stop');
+    io.sockets.in(group).emit('stop');
+  });
 });

@@ -2,20 +2,20 @@ h1= title
 
 #player
 
-select(class="disc")
-  option(value=-1) Select Disc...
-  option(value=0) Disc 1
-  option(value=1) Disc 2
-  option(value=2) Disc 3
-  option(value=3) Disc 4
+div
+  select(class="disc")
+    option(value=-1) Select Disc...
+    option(value=0) Disc 1
+    option(value=1) Disc 2
+    option(value=2) Disc 3
+    option(value=3) Disc 4
 
-div
   button.play play
-div
   button.stop stop
-#progress
+  span#progress
 
 script(src="javascripts/vendor/jquery.js")
 script(src="javascripts/vendor/jquery.jplayer.min.js")
+script(src="/socket.io/socket.io.js")
 script(src="javascripts/media.js")
 script(src="javascripts/main.js")

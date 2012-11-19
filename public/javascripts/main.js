@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  // setup player
+  // ============
   $("#player").jPlayer({
     swfPath: "/javascripts/vendor",
     ready: function() {
@@ -23,15 +25,17 @@ $(document).ready(function() {
     return false;
   });
   $("#player").bind($.jPlayer.event.timeupdate, function(event) {
-    $("#progress").html($.jPlayer.convertTime(event.jPlayer.status.currentTime));
+    var current = $.jPlayer.convertTime(event.jPlayer.status.currentTime);
+    var duration = $.jPlayer.convertTime(event.jPlayer.status.duration);
+    $("#progress").text(current+'/'+duration);
     return false;
   });
 
   $("button.play").click(function() {
-    play();
+    socket.emit('play');
   });
   $("button.stop").click(function() {
-    stop();
+    socket.emit('stop');
   });
 
   $("select.disc").change(function() {
@@ -48,4 +52,11 @@ $(document).ready(function() {
   function stop() {
     $("#player").jPlayer("stop");
   }
+
+  // socket connection
+  // =================
+  socket = io.connect()
+  socket.on('play', play);
+  socket.on('stop', stop);
+
 })
