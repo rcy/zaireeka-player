@@ -8,23 +8,33 @@ $(document).ready(function() {
     $("select.track").append("<option value="+i+">"+this+"</option>");
   });
 
+  // enable all controls except stop, not currently playing
+  function enableControls() {
+    $("button.play").attr('disabled', false);
+    $("select").attr('disabled', false);
+    $("button.stop").attr('disabled', true);
+  }
+  // disable all controls except stop, currently playing
+  function disableControls() {
+    $("button.play").attr('disabled', true);
+    $("select").attr('disabled', true);
+    $("button.stop").attr('disabled', false);
+  }
+
   // setup player
   // ============
   $("#player").jPlayer({
     swfPath: "/javascripts/vendor",
     ready: function(e) {
       $(this).bind($.jPlayer.event.canplay, function(event) {
-        $("button.play").attr('disabled', false);
-        $("button.stop").attr('disabled', true);
+        enableControls();
       });
       $(this).bind($.jPlayer.event.play, function(event) {
-        $("button.play").attr('disabled', true);
-        $("button.stop").attr('disabled', false);
+        disableControls();
         return false;
       });
       $(this).bind($.jPlayer.event.pause, function(event) {
-        $("button.play").attr('disabled', false);
-        $("button.stop").attr('disabled', true);
+        enableControls();
         return false;
       });
       $(this).bind($.jPlayer.event.timeupdate, function(event) {
